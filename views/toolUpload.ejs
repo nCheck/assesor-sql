@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<% include ./partials/header %>
+
+	<body>
+		<!-- Awesome script to Uploading Jquery Form -->
+		<script src="/public/ajaxForm.js"></script>
+		<style media="screen">
+			input {
+				display: inline-block;
+
+				border-radius: 5px;
+			}
+			input[type="text"]{
+				border:2px solid black;
+			}
+		</style>
+
+
+		<form ref='uploadForm' id="upload-file"  action='/upload' method='post' encType="multipart/form-data">
+			<input type="file" id='selected-file' name="selected-file" />
+		
+		</form>
+
+
+		<br>
+		<hr>
+
+<h6> <u> Select the tool name , whose data you would like to upload , Mapped COs will automatically load </u> </h6>
+<br>
+<select name="" id="dropdown" class="to-dropdown">
+		<% tools.forEach(function(tool){ %>
+			<option value="<%= tool._id %>">
+				<%= tool.name %>
+			</option>
+				<br>
+			<% });%>
+</select>
+
+				<br>
+				<hr>
+
+			
+				<div name="coName " id="coList">
+
+				</div>
+
+
+
+				<button style="display:none" type="button" id="trigger-me" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+			    Trigger Me
+			  </button>
+
+				<!-- The Modal -->
+				<div class="modal fade" id="myModal">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+
+				      <!-- Modal Header -->
+				      <div class="modal-header">
+				        <h4 class="modal-title" id="co-name">Course objective  </h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				      </div>
+
+				      <!-- Modal body -->
+				      <div class="modal-body">
+
+				        <table class="table">
+
+
+				          <tbody>
+
+				            <tr>
+				              <td>Weightage:</td>
+				              <td id="weightage">
+				                <!--  -->
+				              </td>
+
+				            </tr>
+				            <tr>
+											<td> Target Student</td>
+				              <td id="targetStudent">
+				              </td>
+				              <td>
+				                <!--  -->
+				              </td>
+				              <tr>
+												<td>Total marks</td>
+				                <td id="totalMark"> </td>
+				                <td>
+				                  <!--  -->
+				                </td>
+				              </tr>
+				              <tr>
+												<td>Total students</td>
+				                <td id="totalStud"></td>
+				                <td>
+				                  <!--  -->
+				                </td>
+				              </tr>
+				              <tr>
+												<td>Type of tool</td>
+				                <td id="toolType"> </td>
+				                <td>
+				                  <!--  -->
+				                </td>
+				              </tr>
+				              <tr>
+												<td>Point assigned</td>
+				                <td id="point">
+				                </td>
+				                <td>
+				                  <!--  -->
+				                </td>
+				              </tr>
+				          </tbody>
+				        </table>
+
+
+
+				      </div>
+
+				      <!-- Modal footer -->
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				      </div>
+
+				    </div>
+				  </div>
+				</div>
+
+
+<!-- ======end of model -->
+
+
+
+
+
+
+
+
+
+
+
+
+				<% include ./partials/footer %>
+
+					<script>
+						// Dynamic Loading of Tools
+						//method="post" 'action=/upload/xlsx/<%=subject%>' + '/'+cos._id+'/'+toolID cutted
+						$('.to-dropdown').click(function() {
+							var toolID = $("#dropdown option:selected ").val();
+							// console.log(toolID);
+							$.get('/api/<%=subject%>/<%=year%>/co/' + toolID, function(data, status) {
+								var tools = [];
+								data.forEach(function(cos) {
+									// console.log(cos.name);
+									tools.push(
+										'<h6> <u> Enter Sheet Number from Excel and Header of the column from where you want to extract data </u><h6> <br>'
+										+'<div>' +
+										'<form method="post" ' + 'action=/upload/xlsx/<%=subject%>' + '/'+cos._id+'/'+toolID + ' >' +
+											 cos.name +
+											' <br/> ' + '	<input type="text" id="sheet_no" name="sheet_no" placeholder="Enter sheet number" /> '+
+											'<input type="text" style="margin-left:10px;margin-right:10px;" name="header" placeholder="header"/>'+
+											'<button class="done btn btn-dark" >Done</button>' + '<br >'  + '</form>' + '</div>'
+									)
+								})
+								$('#coList').html(tools.join(' '))
+
+								$('.done').click(function (e) {
+									e.preventDefault();
+									var form = $(this).parent().parent().children('form');
+									var url =  form.attr('action');
+										$.ajax({
+								           type: "POST",
+													 url: url,
+								           data: form.serialize(), // serializes the form's elements.
+								           success: function(data)
+								           {
+														 		console.log(data)
+															 // alert(data.tool.point + " ======== " + data.co.name); // show response from the php script.
+															 if( data.error == true ){
+																 alert("Wrong Input");
+															 }
+															 else{
+																		$("#co-name").html(data.co.name);
+																		$("#targetStudent").html( data.tool.targetStudent);
+																		$("#totalStud").html(data.tool.totalStud);
+																		$("#toolType").html(data.tool.toolType);
+																		$("#totalMark").html(data.tool.totalMark);
+																		$("#point").html(data.tool.point);
+																		$("#weightage").html(data.tool.weightage);
+																		$('#trigger-me').trigger("click");
+															 }
+								           }
+								         });
+
+								})
+							});
+
+						})
+
+
+						// =========
+
+						$('#selected-file').change(function() {
+							console.log("file selected ");
+							$("#upload-file ").trigger('submit');
+						})
+
+						var fil = $("#upload-file ");
+
+						fil.submit(function(e) {
+
+							console.log("inside submit ");
+							e.preventDefault();
+							var url = "/upload ";
+							$(this).ajaxSubmit({
+								contentType: 'application/json',
+								success: function(data) {
+									console.log(data);
+								}
+							});
+
+						})
+
+						// ============
+
+						// $('.done').click(function () {
+						// 	console.log("shitted" + $(this).parent().attr('action'));
+						// 	// $.ajax({
+					  //   //        type: "POST",
+						// 	// 			 url:'/upload/xlsx/newday/5b39e07302afbc103f58674f/5b38e309cb5e6118a3c731c1',
+					  //   //        data: $(this).serialize(), // serializes the form's elements.
+					  //   //        success: function(data)
+					  //   //        {
+					  //   //            alert(data); // show response from the php script.
+					  //   //        }
+					  //   //      });
+						// 	//
+					  //   // e.preventDefault(); // avoid to execute the actual submit of the form.
+						// })
+
+
+
+
+
+					</script>
+	</body>
+
+</html>

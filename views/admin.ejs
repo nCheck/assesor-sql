@@ -1,0 +1,44 @@
+<%include ./partials/adminheader %>
+  </div>
+  </div>
+  </form>
+  <div class="container" >
+  <div class="row">
+    <!-- column -->
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-block">
+          <h4 class="card-title">Assign Course</h4>
+          <!-- <div class="flot-chart">
+                                   <div class="flot-chart-content" id="flot-line-chart"></div>
+                               </div> -->
+          <form role="form" data-toggle="validator" class="shake" method="post" action="/admin/assign">
+            <div class="row">
+              <div class="col">
+                <label for="teacher">Select Teacher</label>
+                <select class="form-control" id='teacher' name="teacherName">
+                                                   <%user.forEach(function(usr){ %>
+                                                      <option value=<%= usr.username %> ><%= usr.username ; %> </option>
+                                                   <% }) ;%>
+                                                 </select>
+              </div>
+              <div class="col">
+                <label for="course">Select Course</label>
+                <select class="form-control" id='course' name="courseName">
+                                                     <%subject.forEach(function(sub){%>
+                                                       <option value="<%= sub.name %>"><%= sub.name %></option>
+                                                         <%})%>
+                                                   </select>
+              </div>
+            </div>
+
+            <br>
+
+            <button name="submit" type="submit" id="form-submit" class="btn btn-success btn-md pull-right ">Submit</button>
+            <div id="msgSubmit" class="h3 text-center hidden"></div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>

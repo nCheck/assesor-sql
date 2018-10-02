@@ -1,1 +1,1 @@
-assesor-sql
+assesor

@@ -1,0 +1,33 @@
+<% include ./partials/header %>
+
+
+<div class="container">
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="card" style="width: 100%;font-size:24px;text-align:center">
+  <div class="card-header">
+    Your Subjects
+  </div>
+  <ul class="list-group list-group-flush">
+    <% subjects.forEach(function(sub){%>
+      <li class="list-group-item">
+        <a href="/dashboard/<%=sub.name%>/2018" class="button">
+                  <span>    <%= sub.name %> </span>
+              </a>
+      </li>
+      <%  })%>
+  </ul>
+</div>
+
+
+</div>
+
+
+  
+
+<% include ./partials/footer %>

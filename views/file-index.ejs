@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<% include ./partials/header %>
+
+  <body>
+
+      <!-- Page content -->
+      <div class="main">
+
+        <% if (isfile) { %>
+
+          <%= typeof msg!='undefined'? msg:''%>
+            <form method="post" enctype="multipart/form-data">
+              <input type="file" name="filename1">
+              <button type="submit" class="btn">Submit</button>
+            </form>
+
+            <br>
+            <img src="/uploads/<%=subject%>/<%=year%>/<%=filename%>/<%=filename%>.png" alt="No File" class="responsive-img">
+
+
+            <% } %>
+
+              <% if (!isfile) { %>
+
+                Upload and Download Files
+
+                <% } %>
+
+      </div>
+
+
+
+      </div>
+
+
+
+
+
+
+
+      <% include ./partials/footer %>
+  </body>
+
+</html>
