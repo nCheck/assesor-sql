@@ -1,0 +1,10 @@
+node_modules/
+test.js
+testdb.js
+.~lock.name.xlsx#
+temp.js
+test.html
+dbtest.js
+uploads/
+
+*.xlsx#

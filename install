@@ -1,0 +1,1 @@
+npm i body-parser bootstrap ejs express express-fileupload express-session file-system jquery method-override mkdirp multer nodemon popper popper.js xlsx pg --save-prod

@@ -1,15 +1,29 @@
-var mongoose = require('mongoose'),
-	realDB	 = 'mongodb://sanes4:sanes4ever@ds147461.mlab.com:47461/assesor',
-	testDB	 = 'mongodb://sanes4:sanes4ever@ds121871.mlab.com:21871/testassesor';
+import { Pool, Client } from 'pg';
+const connectionString = 'postgres://seyusuvj:hiS7SuLFjBIvEedqXR8NMk4hVXXHsaRP@elmer.db.elephantsql.com:5432/seyusuvj'
 
-mongoose.connect(realDB);
-mongoose.connection.on('connected' , () =>{
-	console.log('connected')
-});
+const pool = new Pool({
+  connectionString: connectionString,
+})
 
-require('./tool');
-require('./toolData');
-require('./co');
-require('./subjectData');
-require('./subject');
-require('./user');
+pool.query('SELECT NOW()', (err, res) => {
+  console.log(err, res)
+  pool.end()
+})
+
+const client = new Client({
+  connectionString: connectionString,
+})
+client.connect()
+
+client.query('SELECT NOW()', (err, res) => {
+  console.log(err, res)
+  client.end()
+})
+
+
+import './tool';
+import './toolData';
+import './co';
+import './subjectData';
+import './subject';
+import './user';
