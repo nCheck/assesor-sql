@@ -20,8 +20,8 @@ const sequelize = require('./db')
 var coSchema = sequelize.define('co', {
 
 	_id :{
-		type:Sequelize.INTEGER,
-		autoIncrement:true,
+		type:Sequelize.UUID,
+		defaultValue: Sequelize.UUIDV1,
 		primaryKey:true
 	},
     name: {
