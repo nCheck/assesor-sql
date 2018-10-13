@@ -1,19 +1,49 @@
-var mongoose = require('mongoose');
-var passportlocalmongoose=require('passport-local-mongoose')
-var Subject=require("./subject");
-var Schema = mongoose.Schema;
-console.log("i m here");
+//var mongoose = require('mongoose');
+//var passportlocalmongoose=require('passport-local-mongoose')
+//var Subject=require("./subject");
+//var Schema = mongoose.Schema;
+//console.log("i m here");
 
 
-var userSchema = new mongoose.Schema({
-	username : String,
-	password : String ,
-	role :{
-		type : String,
-		default : 'Teacher'
+//var userSchema = new mongoose.Schema({
+//	username : String,
+//	password : String ,
+//	role :{
+//		type : String,
+//		default : 'Teacher'
+//	},
+//	subjects:[{type : Schema.Types.ObjectId, ref: 'Subject'}],
+//});
+//
+//module.exports=mongoose.model('User',userSchema);
+
+
+const Sequelize = require('sequelize');
+const sequelize = require('./db')
+
+var userSchema = sequelize.define('User', {
+
+	_id :{
+		type:Sequelize.INTEGER,
+		autoIncrement:true,
+		primaryKey:true
+		},
+    username: {
+	  type: Sequelize.STRING,
+	  allowNull: false
+    },
+		password: {
+	  type: Sequelize.STRING,
+	  allowNull: false
+    },
+    role: {
+      type: Sequelize.STRING,
+			Defaultvalue:'Teacher'
 	},
-	subjects:[{type : Schema.Types.ObjectId, ref: 'Subject'}],
-});
+	subjects:{
+		 type: Sequelize.STRING,
+	}
 
-userSchema.plugin(passportlocalmongoose);//Add all functionalities of local mongoose available to model created by this schema
-module.exports=mongoose.model('User',userSchema);
+  });
+
+module.exports = userSchema;
