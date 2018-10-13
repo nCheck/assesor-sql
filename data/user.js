@@ -20,6 +20,8 @@
 
 const Sequelize = require('sequelize');
 const sequelize = require('./db')
+const Subject = require('./subject')
+
 
 var userSchema = sequelize.define('User', {
 
@@ -45,5 +47,22 @@ var userSchema = sequelize.define('User', {
 	}
 
   });
-
+User.belongsToMany(Subject, {
+  through: {
+    model: Subject,
+    unique: false,
+    
+  },
+  foreignKey: '_id',
+  constraints: false
+});
+Subject.belongsToMany(User, {
+  through: {
+    model: User,
+    unique: false,
+    
+  },
+  foreignKey: '_id',
+  constraints: false
+});
 module.exports = userSchema;
