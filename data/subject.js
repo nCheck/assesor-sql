@@ -21,13 +21,13 @@ module.exports = (Sequelize , sequelize)=>{
 	var subjectSchema = sequelize.define('subject', {
 
 		_id :{
-			type:Sequelize.INTEGER,
-			autoIncrement:true,
-			primaryKey:true
+			type:Sequelize.UUID,
+			defaultValue: Sequelize.UUIDV1,
+		
 		},
 		name: {
 		  type: Sequelize.STRING,
-		  allowNull: false
+			primaryKey:true
 		},
 		subjectCode: {
 		  type: Sequelize.STRING

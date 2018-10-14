@@ -72,3 +72,34 @@ myT = {
 //         console.log( sub[s].dataValues )
 //     }
 // })
+
+
+
+
+
+
+
+console.log(" i m in the new SQL co.getCOPage ");
+db.Subject.findAll({
+  
+  where: {
+    name:'OOPM',
+     
+  },
+
+}).then(sub=>{
+    db.CO.findAll({
+  where:{
+      year:'2018'
+  }      
+    }).then(subCo=>{
+  
+
+        x=[]
+subCo.forEach( ss=>{
+    x.push(ss.dataValues);
+});
+        console.log( x );
+    })
+  
+}); 

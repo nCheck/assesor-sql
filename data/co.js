@@ -36,6 +36,10 @@ module.exports = (Sequelize , sequelize)=>{
 		},
 		year :{
 			type : Sequelize.INTEGER
+		},
+		attainment:{
+			type:Sequelize.INTEGER,
+			defaultValue:0,
 		}
 	
 	  });

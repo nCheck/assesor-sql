@@ -24,7 +24,7 @@
 
 module.exports = (Sequelize , sequelize)=>{
 
-	var toolSchema = sequelize.define('ToolData', {
+	var toolSchema = sequelize.define('tool', {
 
 		_id :{
 			type:Sequelize.UUID,
