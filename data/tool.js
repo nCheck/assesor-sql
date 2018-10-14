@@ -7,20 +7,20 @@
 
 //mongoose.model('Tool' , toolSchema);
 
-const Sequelize = require('sequelize');
-const sequelize = require('./db')
+// const Sequelize = require('sequelize');
+// const sequelize = require('./db')
 
-var toolSchema = sequelize.define('Tool', {
+// var toolSchema = sequelize.define('Tool', {
 
-	_id :{
-		type:Sequelize.INTEGER,
-		autoIncrement:true,
-		primaryKey:true
-	},
-    name: {
-	  type: Sequelize.STRING,
-	  allowNull: false
-    }
-  });
+// 	_id :{
+// 		type:Sequelize.INTEGER,
+// 		autoIncrement:true,
+// 		primaryKey:true
+// 	},
+//     name: {
+// 	  type: Sequelize.STRING,
+// 	  allowNull: false
+//     }
+//   });
 
-module.exports = toolSchema;
+// module.exports = toolSchema;

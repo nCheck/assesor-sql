@@ -23,46 +23,53 @@ const sequelize = require('./db')
 const Subject = require('./subject')
 
 
-var userSchema = sequelize.define('User', {
 
-	_id :{
-		type:Sequelize.INTEGER,
-		autoIncrement:true,
-		primaryKey:true
-		},
-    username: {
-	  type: Sequelize.STRING,
-	  allowNull: false
-    },
-		password: {
-	  type: Sequelize.STRING,
-	  allowNull: false
-    },
-    role: {
+
+
+// User.belongsToMany(Subject, {
+//   as : 'subjects' ,
+//   through: {
+//     model: Subject,
+//     unique: false,
+//   },
+//   foreignKey: '_id',
+//   constraints: false
+// });
+
+// Subject.belongsToMany(User, {
+//   as : 'users', 
+//   through: {
+//     model: User,
+//     unique: false,
+    
+//   },
+//   foreignKey: '_id',
+//   constraints: false
+// });
+
+module.exports = (Sequelize , sequelize)=>{
+  var User = sequelize.define('user', {
+
+    _id :{
+      type:Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV1,
+      primaryKey:true
+      },
+      username: {
       type: Sequelize.STRING,
-			Defaultvalue:'Teacher'
-	},
-	subjects:{
-		 type: Sequelize.STRING,
-	}
+      allowNull: false
+      },
+      password: {
+      type: Sequelize.STRING,
+      allowNull: false
+      },
+      role: {
+        type: Sequelize.ENUM,
+        values : ['Teacher' , 'Admin' , 'Student' , 'Vistor'] ,
+        defaultValue : 'Teacher'
+    }
+  
+    });
 
-  });
-User.belongsToMany(Subject, {
-  through: {
-    model: Subject,
-    unique: false,
-    
-  },
-  foreignKey: '_id',
-  constraints: false
-});
-Subject.belongsToMany(User, {
-  through: {
-    model: User,
-    unique: false,
-    
-  },
-  foreignKey: '_id',
-  constraints: false
-});
-module.exports = userSchema;
+    return User
+};

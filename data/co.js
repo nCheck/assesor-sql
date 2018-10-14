@@ -14,30 +14,32 @@
 // 	},
 // });
 
-const Sequelize = require('sequelize');
-const sequelize = require('./db')
 
-var coSchema = sequelize.define('co', {
+module.exports = (Sequelize , sequelize)=>{
 
-	_id :{
-		type:Sequelize.UUID,
-		defaultValue: Sequelize.UUIDV1,
-		primaryKey:true
-	},
-    name: {
-	  type: Sequelize.STRING,
-	  allowNull: false
-    },
-    blooms: {
-      type: Sequelize.STRING
-	} ,
-	cno :{
-		type : Sequelize.INTEGER 
-	},
-	year :{
-		type : Sequelize.INTEGER
-	}
+	var coSchema = sequelize.define('co', {
 
-  });
+		_id :{
+			type:Sequelize.UUID,
+			defaultValue: Sequelize.UUIDV1,
+			primaryKey:true
+		},
+		name: {
+		  type: Sequelize.STRING,
+		  allowNull: false
+		},
+		blooms: {
+		  type: Sequelize.STRING
+		} ,
+		cno :{
+			type : Sequelize.INTEGER 
+		},
+		year :{
+			type : Sequelize.INTEGER
+		}
+	
+	  });
 
-module.exports = coSchema;
+	  return coSchema
+
+};

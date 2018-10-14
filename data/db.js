@@ -1,6 +1,4 @@
 const Sequelize = require('sequelize');
-// const newCon = 'postgres://seyusuvj:hiS7SuLFjBIvEedqXR8NMk4hVXXHsaRP@elmer.db.elephantsql.com:5432/seyusuvj'
-// const sequelize = new Sequelize(newCon);
 
 const sequelize = new Sequelize('seyusuvj', 'seyusuvj', 'hiS7SuLFjBIvEedqXR8NMk4hVXXHsaRP', {
   dialect: 'postgres',
@@ -18,7 +16,50 @@ sequelize
   });
 
 
-module.exports = sequelize
+
+
+var User = require('./user')(Sequelize , sequelize);
+var Tool = require('./toolData')(Sequelize , sequelize);
+var CO = require('./co')(Sequelize , sequelize);
+var Subject = require('./subject')(Sequelize , sequelize);
+
+
+
+
+var Teaches = sequelize.define('teach' , {} )
+
+//Many to Many Rel
+User.belongsToMany( Subject , { through:Teaches , unique:false } )
+Subject.belongsToMany( User , { through:Teaches , unique:false } )
+
+//One to Many Rel
+Subject.hasMany(CO)
+CO.belongsTo(Subject)
+
+CO.hasMany(Tool)
+Tool.belongsTo(CO)
+
+
+// sequelize.sync({ force: true })
+//   .then(() => {
+//     console.log(`Database & tables created!`)
+//   })
+
+
+module.exports = {
+  User , Subject , Teaches , CO , Tool
+}
+
+
+
+
+
+
+
+
+
+
+// module.exports.user = 
 //   const User = sequelize.define('user', {
 //     firstName: {
 //       type: Sequelize.STRING

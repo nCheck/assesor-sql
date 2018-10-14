@@ -13,24 +13,28 @@
 
 
 
-const Sequelize = require('sequelize');
-const sequelize = require('./db')
 
-var subjectSchema = sequelize.define('Subject', {
 
-	_id :{
-		type:Sequelize.INTEGER,
-		autoIncrement:true,
-		primaryKey:true
-	},
-    name: {
-	  type: Sequelize.STRING,
-	  allowNull: false
-    },
-    subjectCode: {
-      type: Sequelize.STRING
-	}
 
-  });
+module.exports = (Sequelize , sequelize)=>{
 
-module.exports = subjectSchema;
+	var subjectSchema = sequelize.define('subject', {
+
+		_id :{
+			type:Sequelize.INTEGER,
+			autoIncrement:true,
+			primaryKey:true
+		},
+		name: {
+		  type: Sequelize.STRING,
+		  allowNull: false
+		},
+		subjectCode: {
+		  type: Sequelize.STRING
+		}
+	
+	  });
+
+	  return subjectSchema
+
+};

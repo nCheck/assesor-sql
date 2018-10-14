@@ -20,56 +20,58 @@
 //mongoose.model('ToolDefault',toolSchema);
 //module.exports.toolSchema = toolSchema;
 
-const Sequelize = require('sequelize');
-const sequelize = require('./db')
 
-var toolSchema = sequelize.define('ToolData', {
 
-	_id :{
-		type:Sequelize.INTEGER,
-		autoIncrement:true,
-		primaryKey:true
-	},
-  tool: {
-	  type: Sequelize.STRING,
-	  allowNull: false
-    },
-  weightage: {
-      type: Sequelize.INTEGER
-	} ,
-	targetStudent:{
-		type : Sequelize.INTEGER
-	},
-	totalMark :{
-		type : Sequelize.INTEGER
-	},
-	totalStud:{
-		type : Sequelize.INTEGER,
-		Defaultvalue:0
-	},
-	targetMark :{
-		type : Sequelize.INTEGER
-	},
-	studentsAchieved: {
-	type: Sequelize.INTEGER
-	},
-	toolType: {
-		type: Sequelize.STRING
-	} ,
-	high:{
-		type : Sequelize.INTEGER
-	},
-	mid :{
-		type : Sequelize.INTEGER
-	},
-	low:{
-		type : Sequelize.INTEGER
-	},
-	point :{
-		type : Sequelize.INTEGER,
-		Defaultvalue:0
-	}
+module.exports = (Sequelize , sequelize)=>{
 
-  });
+	var toolSchema = sequelize.define('ToolData', {
 
-module.exports = toolSchema;
+		_id :{
+			type:Sequelize.UUID,
+			defaultValue: Sequelize.UUIDV1,
+			primaryKey:true
+		},
+	  tool: {
+		  type: Sequelize.STRING,
+		  allowNull: false
+		},
+	  weightage: {
+		  type: Sequelize.INTEGER
+		} ,
+		targetStudent:{
+			type : Sequelize.INTEGER
+		},
+		totalMark :{
+			type : Sequelize.INTEGER
+		},
+		totalStud:{
+			type : Sequelize.INTEGER,
+			Defaultvalue:0
+		},
+		targetMark :{
+			type : Sequelize.INTEGER
+		},
+		studentsAchieved: {
+		type: Sequelize.INTEGER
+		},
+		toolType: {
+			type: Sequelize.STRING
+		} ,
+		high:{
+			type : Sequelize.INTEGER
+		},
+		mid :{
+			type : Sequelize.INTEGER
+		},
+		low:{
+			type : Sequelize.INTEGER
+		},
+		point :{
+			type : Sequelize.INTEGER,
+			Defaultvalue:0
+		}
+	
+	  });
+	
+	return toolSchema
+};
