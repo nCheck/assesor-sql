@@ -21,18 +21,7 @@ router
 //==========================================
 router
   .route('/')
-  .get((req,res)=>{
-    console.log("You clicked the main list of all subejcts for the teacher ")
-      User.findOne({username:req.user.username}).populate('subjects').exec(function (err , user) {
-        if(err){
-            console.log("Err in getAll of User.ctrlr");
-        }
-        else{
-            res.render('index' , {subjects : user.subjects , hidenav : true , req:req})
-        }
-
-    })
-    });
+  .get(Subject.sendSubjects);
 //=======================================================
 //Displays subject you selected from teacher's dashboard
 //=======================================================

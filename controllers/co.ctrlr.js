@@ -1,7 +1,9 @@
-var mongoose = require('mongoose');
-var CO = mongoose.model('CO');
-var SubjectData = mongoose.model('SubjectData');
-var Subject = mongoose.model('Subject');
+// var mongoose = require('mongoose');
+// var CO = mongoose.model('CO');
+// var SubjectData = mongoose.model('SubjectData');
+// var Subject = mongoose.model('Subject');
+
+var db = require('../data/db')
 
 module.exports.getDataDoc = function (req , res) {
 
@@ -217,3 +219,17 @@ module.exports.getCOGraph = function (req , res , next) {
 	})
 
 };
+
+
+module.exports.getCOGraph = (req , res)=>{
+
+	query = {name : req.params.subject , year :req.params.year};
+	console.log('Sending GraphData');
+	var ret;
+
+	db.Subject.findAll( { where : {name : req.params.subject}
+		,include : [{model:db.CO , where:{year:req.params.year}}] } )
+		.then(doc=>{
+			console.log(doc)
+		})
+}
