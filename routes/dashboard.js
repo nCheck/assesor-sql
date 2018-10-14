@@ -38,6 +38,7 @@ router
 //===================================================================================
 //Displays all cos to the subject  and dynamically adds and  displays it immediately
 //===================================================================================
+
 router
   .route('/:subject/:year/CO')
     .get(coCtrl.getData)
@@ -46,6 +47,7 @@ router
 //=====================================================
 //Removes CO
 //=====================================================
+
 router
   .route('/:subject/:year/CO/:coID/delete')
     .post(coCtrl.removeOneCO);
@@ -53,6 +55,7 @@ router
 //=====================================================
 //Edit CO
 //=====================================================
+
 router
   .route('/:subject/:year/CO/:coID/edit')
     .post(coCtrl.editOneCO);
@@ -60,6 +63,7 @@ router
 //===========================================================
 //Gives user to input tool data information(target marks etc)
 //===========================================================
+
 router
   .route('/:subject/:year/CO/:coID/tool')
   .get(toolCtrl.getData)

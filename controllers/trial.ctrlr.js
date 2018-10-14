@@ -210,3 +210,20 @@ myT4 = {
 //     })
   
 // }); 
+
+// db.CO.destroy({where : {_id : '2e34c4c1-cf9f-11e8-ada7-2928b4f31f1b'}})
+// .then(doc=>{
+//     console.log(doc)			
+// })
+
+
+db.CO.findAll( { where : { _id : '2e34c4c0-cf9f-11e8-ada7-2928b4f31f1b'} , include : [{model:db.Tool}] } )
+        .then( cos=>{
+
+            var cleaned = []
+            cos[0].dataValues.tools.forEach(c => {
+                cleaned.push(c.dataValues)
+            });
+            console.log(cleaned)
+
+        })

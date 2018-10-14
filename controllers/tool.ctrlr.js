@@ -6,46 +6,71 @@ var db = require('../data/db')
 
 
 var allTools = [];
-module.exports.getData = function (req, res) {
-	var toolA = [];
-
-	Tool.find({}, (err, doc, next)=>{
-		if(err){
-			console.log("Err in Tool.find of getData n toolCtrlr is, ",err);
-		}
-		else{
-			// console.log("the array of all tool names is: ",doc);
-			doc.forEach((t)=>{
-				allTools.push(t);
-			});
-			// console.log("allTools looks like this, ",allTools);
-		}
-	});
 
 
-	CO.findById(req.params.coID).populate({
-		path : 'tools' , populate : {
-			path : 'tool',
-			model : 'Tool'
-		}
-	}).lean().exec( (err, co )=>{
-		if(err){
-			console.log("in getData of tool.ctrl err is, ",err);
-		}
-		else {
-			co.tools.forEach(function(t){
-				toolA.push(t.tool.name);
+// module.exports.getData = function (req, res) {
+// 	var toolA = [];
+
+// 	Tool.find({}, (err, doc, next)=>{
+// 		if(err){
+// 			console.log("Err in Tool.find of getData n toolCtrlr is, ",err);
+// 		}
+// 		else{
+// 			// console.log("the array of all tool names is: ",doc);
+// 			doc.forEach((t)=>{
+// 				allTools.push(t);
+// 			});
+// 			// console.log("allTools looks like this, ",allTools);
+// 		}
+// 	});
+
+
+// 	CO.findById(req.params.coID).populate({
+// 		path : 'tools' , populate : {
+// 			path : 'tool',
+// 			model : 'Tool'
+// 		}
+// 	}).lean().exec( (err, co )=>{
+// 		if(err){
+// 			console.log("in getData of tool.ctrl err is, ",err);
+// 		}
+// 		else {
+// 			co.tools.forEach(function(t){
+// 				toolA.push(t.tool.name);
+// 			});
+// 			// console.log("got tool names ",toolA);
+// 			// console.log("CO Tools ",co.tools);
+// 			// console.log("allTools looks like this once more, ",allTools);
+// 			console.log("this is type "+typeof(toolA));
+// 			res.render("toolAdd",{thisToolNames : toolA , tools : co.tools
+// 				 , allTools : allTools , req : req ,
+// 				subject : req.params.subject , year : req.params.year
+// 			});
+// 		}
+// 	});
+// }
+
+module.exports.getData = (req, res)=> {
+
+	var coId = req.params.coID
+
+	db.CO.findAll( { where : { _id : coId} , include : [{model:db.Tool}] } )
+		.then(cos=>{
+
+			var tools = [] , toolNames = []
+			
+            cos[0].dataValues.tools.forEach(c => {
+				tools.push(c.dataValues)
+				toolNames.push(c.dataValues.tool)
 			});
-			// console.log("got tool names ",toolA);
-			// console.log("CO Tools ",co.tools);
-			// console.log("allTools looks like this once more, ",allTools);
-			console.log("this is type "+typeof(toolA));
-			res.render("toolAdd",{thisToolNames : toolA , tools : co.tools
-				 , allTools : allTools , req : req ,
-				subject : req.params.subject , year : req.params.year
-			});
-		}
-	});
+			
+            console.log(tools)
+			res.render("toolAdd", {thisToolNames : toolNames , tools : tools
+				, req : req , subject : req.params.subject , year : req.params.year
+		   });
+
+        })
+
 }
 
 

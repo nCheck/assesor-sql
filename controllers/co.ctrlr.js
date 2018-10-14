@@ -22,25 +22,59 @@ module.exports.getDataDoc = function (req , res) {
 
 };
 
-module.exports.getData = function (req , res , next) {
+
+//======Sending COs data
+
+// module.exports.getData = function (req , res , next) {
+
+// 	query = {name : req.params.subject , year : req.params.year};
+// 		console.log('Sending Data '+req.params.subject);
+
+// 	var ret;
+// 	SubjectData.findOne(query).populate('co').lean().exec((err , doc)=>{
+// 		if(err || doc == null){
+// 			console.log("not found " + err);
+// 			res.send('ERROR , please go back n try again');
+// 		}
+// 		else {
+// 			res.render('coPage' , {data : doc.co  , req : req ,
+// 				 subject : req.params.subject , year : req.params.year
+// 				});
+// 		}
+// 	})
+
+// };
+
+
+module.exports.getData = ( req , res , next )=>{
 
 	query = {name : req.params.subject , year : req.params.year};
-		console.log('Sending Data '+req.params.subject);
 
-	var ret;
-	SubjectData.findOne(query).populate('co').lean().exec((err , doc)=>{
-		if(err || doc == null){
-			console.log("not found " + err);
-			res.send('ERROR , please go back n try again');
-		}
-		else {
-			res.render('coPage' , {data : doc.co  , req : req ,
-				 subject : req.params.subject , year : req.params.year
-				});
-		}
-	})
+	console.log('Sending COs of '+req.params.subject);
 
-};
+
+	db.Subject.findAll( { where : {name : req.params.subject}
+		,include : [{model:db.CO , where:{year:req.params.year}}] } )
+		.then(doc=>{
+			console.log(doc)
+			var jcos = doc[0].dataValues.cos
+			cos = []
+
+			jcos.forEach(jc => {
+				cos.push( js.dataValues )
+			});
+
+
+			res.render('coPage' , {data : cos  , req : req ,
+				subject : req.params.subject , year : req.params.year
+			   });
+
+		});
+
+
+}
+
+
 
 // ==========paste=========
 // if(d.tools.indexOf(req.params.toolID)!=-1){
@@ -80,44 +114,74 @@ module.exports.getCO = (req , res)=>{
 
 
 //waste create then find better find sub inside it create n oush
+//========Adding CO
+
+// module.exports.addOne = (req, res)=> {
+// 	console.log("im inside add one"+req.params.subject);
+// 	var query = {name : req.params.subject , year : req.params.year};
+// 	CO.create({
+// 		name : req.body.name,
+// 		blooms : req.body.blooms,
+// 		number : req.body.number
+// 	}).then(
+// 		SubjectData.findOne(query, (err,doc)=>{
+// 			CO.findOne({
+// 				name : req.body.name,
+// 				blooms : req.body.blooms,
+// 				number : req.body.number
+// 			} , (err , docc)=>{
+// 				doc.co.push(docc._id);
+// 				doc.save();
+// 				res.redirect('co');
+// 			})
+// 		})
+// 	);
+
+// };
 
 module.exports.addOne = (req, res)=> {
-	console.log("im inside add one"+req.params.subject);
+
+	console.log("im inside add one CO into "+req.params.subject);
 	var query = {name : req.params.subject , year : req.params.year};
-	CO.create({
+
+	db.CO.create({
 		name : req.body.name,
 		blooms : req.body.blooms,
-		number : req.body.number
-	}).then(
-		SubjectData.findOne(query, (err,doc)=>{
-			CO.findOne({
-				name : req.body.name,
-				blooms : req.body.blooms,
-				number : req.body.number
-			} , (err , docc)=>{
-				doc.co.push(docc._id);
-				doc.save();
-				res.redirect('co');
-			})
-		})
-	);
-
-};
+		number : req.body.number,
+		year : req.params.year,
+		subjectName:req.params.subject
+	}).then( co=>{
+		res.redirect('co')
+	} )
+}
 
 
-// removes co
-module.exports.removeOneCO = function (req, res) {
-	console.log("Deleting CO" + req.params.coID);
-	CO.deleteOne({_id:req.params.coID} , (err)=>{
-		if(err){
-			res.send(err)
-		}
-		else{
+// Delete CO
+
+// module.exports.removeOneCO = function (req, res) {
+// 	console.log("Deleting CO" + req.params.coID);
+// 	CO.deleteOne({_id:req.params.coID} , (err)=>{
+// 		if(err){
+// 			res.send(err)
+// 		}
+// 		else{
+// 			backURL=req.header('Referer');
+// 			res.redirect(backURL)
+// 		}
+// 	});
+
+
+// }
+
+
+module.exports.removeOneCO = (req, res)=> {
+	var id = req.params.coID
+	console.log("Deleting CO " + id);
+	db.CO.destroy({where : {_id = id}})
+		.then(doc=>{
 			backURL=req.header('Referer');
-			res.redirect(backURL)
-		}
-	});
-
+			res.redirect(backURL)			
+		})
 
 }
 
