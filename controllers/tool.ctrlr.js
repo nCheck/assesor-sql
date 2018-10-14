@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');
-var Tool = mongoose.model('Tool');
-var ToolData = mongoose.model('ToolData');
-var CO = mongoose.model('CO');
+// var mongoose = require('mongoose');
+// var Tool = mongoose.model('Tool');
+// var ToolData = mongoose.model('ToolData');
+// var CO = mongoose.model('CO');
+var db = require('../data/db')
 
 
 var allTools = [];
@@ -55,6 +56,9 @@ module.exports.getToolDoc = (req , res)=>{
 			, coID : req.params.coID , tools : doc  , req : req});
 	});
 }
+
+
+
 
 //For this to work the req.body shud contain name of the co in which we wish to add the tool
 module.exports.addOne = function (req , res) {
@@ -177,3 +181,12 @@ module.exports.editOneTool = function (req, res) {
 				}
 	})
 }
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,9 @@
-var mongoose = require('mongoose');
-var Subject = mongoose.model('Subject');
-var User = mongoose.model('User');
-var SubjectData = mongoose.model('SubjectData');
+// var mongoose = require('mongoose');
+// var Subject = mongoose.model('Subject');
+// var User = mongoose.model('User');
+// var SubjectData = mongoose.model('SubjectData');
+var db = require('../data/db')
+
 var year = 2018;
 
 module.exports.getAll = function (req , res) {
@@ -142,4 +144,38 @@ module.exports.removeOne = (req, res)=> {
 			}
 		}
 	)
+}
+
+
+///////////Posgres
+// module.exports.sam = (req,res)=>{
+//     console.log("You clicked the main list of all subejcts for the teacher ")
+//       User.findOne({username:req.user.username}).populate('subjects').exec(function (err , user) {
+//         if(err){
+//             console.log("Err in getAll of User.ctrlr");
+//         }
+//         else{
+//             res.render('index' , {subjects : user.subjects , hidenav : true , req:req})
+//         }
+
+//     })
+//     }
+module.exports.sendSubjects = (req  ,res)=>{
+
+	console.log("Sending Subjects")
+	db.User.findAll({
+		where :{
+			username : req.user.username
+		},
+		include : [{model:db.Subject}]
+	}).then(usr=>{
+		sub = usr[0].dataValues.subjects
+		subjects = []
+		sub.forEach(ele => {
+			subjects.push( ele.dataValues.name )
+		});
+		console.log(subjects)
+		res.render('index' , {subjects : subjects , hidenav : true , req:req})
+	})
+
 }

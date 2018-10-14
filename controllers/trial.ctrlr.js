@@ -5,14 +5,16 @@ var db = require('../data/db')
 
 
 myCo = {
-    name : 'Danci',
-    blooms : 'Samba',
-    cno : 2,
-    subjectId : 4 
+    name : 'ooops',
+    blooms : 'Pooo',
+    cno : 6,
+    subjectId : 2,
+    year: 2017 
 }
 myUser  ={
-    username: 'nchecl',
-    password: 'ncheck', 
+    username: 'suyash',
+    password: 'suyash',
+    role : 'Admin'
 }
 
 mySub = {
@@ -72,6 +74,40 @@ myT = {
 //         console.log( sub[s].dataValues )
 //     }
 // })
+
+// db.Teaches.create({userId:'fd5a8630-cf7d-11e8-8c04-19f554a4bfd9' , subjectId:1})
+// db.Teaches.create({userId:'fd5a8630-cf7d-11e8-8c04-19f554a4bfd9' , subjectId:2})
+
+// db.User.findAll({
+//     where :{
+//         username : 'ncheck'
+//     },
+//     include : [{model:db.Subject}]
+// }).then(usr=>{
+//     sub = usr[0].dataValues.subjects
+//     subjects = []
+//     sub.forEach(ele => {
+//         subjects.push( ele.dataValues.name )
+//     });
+//     console.log(subjects)
+// })
+
+db.Subject.findAll( { where : {name : 'PokL'}
+    ,include : [{model:db.CO , where : {year:2017} }] } )
+    .then(doc=>{
+        // subs = doc[0].dataValues.cos
+        // subs.forEach(ele => {
+        //     console.log(ele.dataValues)
+        // });
+        var cos = doc[0].dataValues.cos
+        for (d in cos){
+            console.table(cos[d].dataValues)
+        }
+        
+        
+    })
+
+
 
 
 
