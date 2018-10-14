@@ -156,69 +156,102 @@ module.exports.getTools = (req , res)=>{
 
 }
 
-//Co report page
+
+
+
+
+
+
+
+
+
+//CO Report Page
+
+
+
+// module.exports.COreport = (req , res)=>{
+// 	var dc = []
+// 	SubjectData.findOne({name:req.params.subject , year : req.params.year}).populate({
+// 		path : 'co' , populate : {
+// 			path : 'tools',
+// 			model : 'ToolData',populate :{
+// 				path:'tool',
+// 				model:'Tool'
+// 			}
+// 		}
+// 	}).exec((err , sub)=>{
+
+// var  cos=sub.co;
+// console.log("These are the cos of subject "+sub.name+" :    "+sub.co);
+// 		res.render('coReport',{cos:cos,req:req ,subject:req.params.subject });
+// 	})
+
+// }
+
 module.exports.COreport = (req , res)=>{
 	var dc = []
-	SubjectData.findOne({name:req.params.subject , year : req.params.year}).populate({
-		path : 'co' , populate : {
-			path : 'tools',
-			model : 'ToolData',populate :{
-				path:'tool',
-				model:'Tool'
-			}
-		}
-	}).exec((err , sub)=>{
 
-var  cos=sub.co;
-console.log("These are the cos of subject "+sub.name+" :    "+sub.co);
-		res.render('coReport',{cos:cos,req:req ,subject:req.params.subject });
-	})
+	db.Subject.findAll( { where : {name:req.params.subject} ,
+		include :  [{ model:db.CO , where:{year:req.params.year , 
+					include :  [{model:db.Tool}]
+		} }] 
+	 }).then( doc=>{
+
+		var tcos = doc[0].dataValues.cos;
+		var cos = [] , tools = []
+
+		tcos.forEach(tc => {
+			cos.push(tc.dataValues)
+		});
+		
+		cos.forEach(co => {
+			tools.push( co.tools.dataValues )
+		});
 
 
+		res.render('coReport',{cos:cos, tools:tools,req:req ,subject:req.params.subject });
 
-
-
-
+	 })
 
 }
 
 
 
-module.exports.getCOGraph = function (req , res , next) {
+// module.exports.getCOGraph = function (req , res , next) {
 
-	query = {name : req.params.subject , year :req.params.year};
-	console.log('Sending Data');
-	var ret;
-	SubjectData.findOne(query).populate('co').lean().exec((err , doc)=>{
-		if(err){
-			console.log("not found " + err);
-		}
-		else {
-			//console.log(doc);
-			//res.render('graph' , {data : doc.co});
+// 	query = {name : req.params.subject , year :req.params.year};
+// 	console.log('Sending Data');
+// 	var ret;
+// 	SubjectData.findOne(query).populate('co').lean().exec((err , doc)=>{
+// 		if(err){
+// 			console.log("not found " + err);
+// 		}
+// 		else {
+// 			//console.log(doc);
+// 			//res.render('graph' , {data : doc.co});
 
-			var attain=doc.co.map(function(t){
-				ignoreUndefined: true
-					return t.attainment;
+// 			var attain=doc.co.map(function(t){
+// 				ignoreUndefined: true
+// 					return t.attainment;
 
-			})
+// 			})
 
-			var labels=doc.co.map(function(t){
-				ignoreUndefined: true
-					return "CO"+String(t.number);
+// 			var labels=doc.co.map(function(t){
+// 				ignoreUndefined: true
+// 					return "CO"+String(t.number);
 
-			})
+// 			})
 
-			attain = attain.filter(function( element ) {
-   					return element !== undefined;
-		});
-			res.render('graph' , {attain : attain, labels : labels , req : req,year:req.params.year , subject : req.params.subject});
+// 			attain = attain.filter(function( element ) {
+//    					return element !== undefined;
+// 		});
+// 			res.render('graph' , {attain : attain, labels : labels , req : req,year:req.params.year , subject : req.params.subject});
 
-		}
+// 		}
 
-	})
+// 	})
 
-};
+// };
 
 
 module.exports.getCOGraph = (req , res)=>{
@@ -231,5 +264,32 @@ module.exports.getCOGraph = (req , res)=>{
 		,include : [{model:db.CO , where:{year:req.params.year}}] } )
 		.then(doc=>{
 			console.log(doc)
+			var jcos = doc[0].dataValues.cos
+			cos = []
+
+			jcos.forEach(jc => {
+				cos.push( js.dataValues )
+			});
+
+			var attain = cos.map(function(t){
+				ignoreUndefined: true
+					return t.attainment;
+
+			})
+
+			var labels = cos.map(function(t){
+				ignoreUndefined: true
+					return "CO"+String(t.number);
+
+			})
+
+			attain = attain.filter(function( element ) {
+				return element !== undefined;
+ 			});
+			 res.render('graph' , {attain : attain, labels : labels , 
+				req : req,year:req.params.year , 
+				subject : req.params.subject});
+
 		})
+
 }
