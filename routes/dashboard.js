@@ -26,8 +26,8 @@ router
 //Displays subject you selected from teacher's dashboard
 //=======================================================
 router
-  .route('/:subject/:year')   //Displays Current CO Info
-  .get((Subject.addSubjectByYear))
+  .route('/:subject/:year')   //Dashboard
+  .get((Subject.getDashboard))
 
 // router
 //   .route('/:subject/:year')   //Displays Current CO Info

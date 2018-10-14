@@ -60,41 +60,83 @@ module.exports.assignCourse = (req, res)=> {
 		}
 	})
 }
-module.exports.addSubjectByYear=(req,res)=>{
 
-if(req.user.role=="Admin"){
-console.log("Admin access of subject  ");
-	Subject.findOne({name : req.params.subject}, (err , docc)=>{
-		if(err)
-		console.log("Cannot find it "+err);
-		else{
-			console.log(docc);
-SubjectData.findOne({name:req.params.subject,year:req.params.year},(err,subData)=>{
 
-	if(err){
-		console.log("here i am as an errror in subject data creation while assigning "+err);
-	}
-	else if (subData == null) {
-		console.log("Im inside null");
-		SubjectData.create({year:req.params.year , name:req.params.subject},(err, sub)=>{
-				console.log(sub);
-				docc.subjectData.push(sub._id);
-				docc.save();
-			})
-	}
-	else if(subData!=null) {
-		console.log("Data of this year has been created");
-	}
-	res.render('dashboard', {subject : req.params.subject,year:req.params.year , req : req });
 
-})
+// module.exports.addSubjectByYear=(req,res)=>{
+
+// if(req.user.role=="Admin"){
+// console.log("Admin access of subject  ");
+// 	Subject.findOne({name : req.params.subject}, (err , docc)=>{
+// 		if(err)
+// 		console.log("Cannot find it "+err);
+// 		else{
+// 			console.log(docc);
+// SubjectData.findOne({name:req.params.subject,year:req.params.year},(err,subData)=>{
+
+// 	if(err){
+// 		console.log("here i am as an errror in subject data creation while assigning "+err);
+// 	}
+// 	else if (subData == null) {
+// 		console.log("Im inside null");
+// 		SubjectData.create({year:req.params.year , name:req.params.subject},(err, sub)=>{
+// 				console.log(sub);
+// 				docc.subjectData.push(sub._id);
+// 				docc.save();
+// 			})
+// 	}
+// 	else if(subData!=null) {
+// 		console.log("Data of this year has been created");
+// 	}
+// 	res.render('dashboard', {subject : req.params.subject,year:req.params.year , req : req });
+
+// })
+// }
+// })
+// }
+// else {
+// res.render('dashboard', {subject : req.params.subject,year:req.params.year , req : req });
+// }
+// }
+
+module.exports.getDashboard = (req , res )=>{
+	res.render('dashboard', {subject : req.params.subject,year:req.params.year , req : req });	
 }
-})
+
+module.exports.getSubjectOfYear = (req , res)=>{
+
+	if( !req.user.role == 'Admin'){
+		res.send('Access Denied')
+	}
+	else{
+
+		db.Subject.findAll({ include:[{model : db.User , where :{username: req.user.username}}] })
+		.then(sub=>{
+			subs = []
+			sub.forEach(s => {
+				subs.push(s.dataValues.name)
+			});
+			console.log(subs)
+		})
+
+	}
+
 }
-else {
-res.render('dashboard', {subject : req.params.subject,year:req.params.year , req : req });
-}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /////Sends all COS of Subject to API
 
 module.exports.getCOs = (req , res) =>{

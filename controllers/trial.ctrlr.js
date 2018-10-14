@@ -8,22 +8,67 @@ myCo = {
     name : 'ooops',
     blooms : 'Pooo',
     cno : 6,
-    subjectId : 2,
+    subjectName : 'OOPM',
     year: 2017 
 }
+myCo2 = {
+    name : 'pilate',
+    blooms : 'yoga',
+    cno : 5,
+    subjectName : 'OOPM',
+    year: 2018 
+}
+myCo3 = {
+    name : 'tuhi',
+    blooms : 'yuo',
+    cno : 7,
+    subjectName : 'OOPM',
+    year: 2017 
+}
+
+
 myUser  ={
     username: 'suyash',
     password: 'suyash',
-    role : 'Admin'
+    // role : 'Admin'
+}
+
+myUser2  ={
+    username: 'ncheck',
+    password: 'ncheck'
 }
 
 mySub = {
     name : 'OOPM' ,
     subjectCode : 'CSOO1'
 }
+mySub2 = {
+    name : 'TCS' ,
+    subjectCode : 'CSOO2'
+}
+
 myT = {
-    userId : '7c4f7c20-cf74-11e8-bd9f-5f4c5681c784' ,
-    subjectId : 1
+    tool : 'UT',
+    weightage : 2,
+    coId : '2e34c4c0-cf9f-11e8-ada7-2928b4f31f1b'
+}
+
+myT2 = {
+    tool : 'MP',
+    weightage : 3,
+    coId : '2e34c4c0-cf9f-11e8-ada7-2928b4f31f1b'
+}
+
+myT3 = {
+    tool : 'UT',
+    weightage : 2,
+    coId : '2e3476a0-cf9f-11e8-ada7-2928b4f31f1b'
+}
+
+myT4 = {
+    tool : 'Courser',
+    weightage : 1,
+    coId : '2e3476a0-cf9f-11e8-ada7-2928b4f31f1b'
 }
 // CO.sync({force: true}).then(()=>{
 //     CO.create(myCo).then(co=>{
@@ -34,6 +79,19 @@ myT = {
 // db.CO.create(myCo).then(co=>{
 //     console.log(co)
 //   });
+
+// db.CO.create(myCo2).then(co=>{
+//     console.log(co)
+//   });
+
+// db.CO.create(myCo3).then(co=>{
+// console.log(co)
+// });
+
+// db.Tool.create( myT )
+// db.Tool.create( myT2 )
+// db.Tool.create( myT3 )
+// db.Tool.create( myT4 )
 
 // User.sync({force: true}).then(()=>{
 //     User.create(myUser).then(usr=>{
@@ -48,12 +106,18 @@ myT = {
 // db.User.create(myUser).then(usr=>{
 //     console.log(usr)
 // })
+// db.User.create(myUser2).then(usr=>{
+//     console.log(usr)
+// })
 
 // db.Teaches.create(myT).then(sub=>{
 //     console.table(sub.dataValues)
 // })
 
 // db.Subject.create(mySub).then(usr=>{
+//     console.log(usr)
+// })
+// db.Subject.create(mySub2).then(usr=>{
 //     console.log(usr)
 // })
 
@@ -92,50 +156,57 @@ myT = {
 //     console.log(subjects)
 // })
 
-db.Subject.findAll( { where : {name : 'PokL'}
-    ,include : [{model:db.CO , where : {year:2017} }] } )
-    .then(doc=>{
-        // subs = doc[0].dataValues.cos
-        // subs.forEach(ele => {
-        //     console.log(ele.dataValues)
-        // });
-        var cos = doc[0].dataValues.cos
-        for (d in cos){
-            console.table(cos[d].dataValues)
-        }
+// db.Subject.findAll( { where : {name : 'PokL'}
+//     ,include : [{model:db.CO , where : {year:2017} }] } )
+//     .then(doc=>{
+//         // subs = doc[0].dataValues.cos
+//         // subs.forEach(ele => {
+//         //     console.log(ele.dataValues)
+//         // });
+//         var cos = doc[0].dataValues.cos
+//         for (d in cos){
+//             console.table(cos[d].dataValues)
+//         }
         
         
-    })
+//     })
 
 
 
 
+// db.Subject.findAll({ include:[{model : db.User , where :{username:'suyash'}}] })
+//     .then(sub=>{
+//         subs = []
+//         sub.forEach(s => {
+//             subs.push(s.dataValues.name)
+//         });
+//         console.log(subs)
+//     })
 
 
 
 
-
-console.log(" i m in the new SQL co.getCOPage ");
-db.Subject.findAll({
+// console.log(" i m in the new SQL co.getCOPage ");
+// db.Subject.findAll({
   
-  where: {
-    name:'OOPM',
+//   where: {
+//     name:'OOPM',
      
-  },
+//   },
 
-}).then(sub=>{
-    db.CO.findAll({
-  where:{
-      year:'2018'
-  }      
-    }).then(subCo=>{
+// }).then(sub=>{
+//     db.CO.findAll({
+//   where:{
+//       year:'2018'
+//   }      
+//     }).then(subCo=>{
   
 
-        x=[]
-subCo.forEach( ss=>{
-    x.push(ss.dataValues);
-});
-        console.log( x );
-    })
+//         x=[]
+// subCo.forEach( ss=>{
+//     x.push(ss.dataValues);
+// });
+//         console.log( x );
+//     })
   
-}); 
+// }); 
