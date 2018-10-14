@@ -1,19 +1,53 @@
-var mongoose = require('mongoose');
-var CO = mongoose.model('CO');
-var SubjectData = mongoose.model('SubjectData');
-var Subject = mongoose.model('Subject');
+// var mongoose = require('mongoose');
+// var CO = mongoose.model('CO');
+// var SubjectData = mongoose.model('SubjectData');
+// var Subject = mongoose.model('Subject');
 
 
-
+var db = require('../data/db')
 module.exports.getCOPage = (req , res)=>{
   var subject = req.params.subject, year = req.params.year;
-console.log(" i m in co.getCOPage ");
-  SubjectData.findOne({name:subject , year : year} ).populate('co').exec( (err , doc)=>{
-    cos = doc.co.map(function (co) {
-      return co;
-    })
-    res.render('showCOs' , {cos : cos , req : req , subject : subject})
-  })
+console.log(" i m in the new SQL co.getCOPage ");
+db.Subject.findAll({
+  
+  where: {
+    name:subject ,
+  },
+ 
+}).then(sub=>{
+
+  db.CO.findAll({
+    where:{
+        year:year
+    }      
+      }).then(subCo=>{
+      x=[]
+      subCo.forEach( ss=>{
+      x.push(ss.dataValues);    // convert to array
+        });
+       res.render('showCOs',{cos:x,req:req,subject:subject})
+        })
+}); 
+}
+
+
+// module.exports.getCOPage = (req , res)=>{
+//   var subject = req.params.subject, year = req.params.year;
+//   console.log(" i m in co.getCOPage ");
+//   SubjectData.findOne({name:subject , year : year} ).populate('co').exec( (err , doc)=>{
+//     cos = doc.co.map(function (co) {
+//       return co;
+//     })
+//     res.render('showCOs' , {cos : cos , req : req , subject : subject})
+//   })
+// }
+
+module.exports.getToolPage = (req , res)=>{
+	var coID = req.params.coID , subject = req.params.subject;
+  var year=req.params.year;
+
+
+
 }
 
 
